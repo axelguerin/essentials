@@ -1,0 +1,13 @@
+server {
+    listen 80;
+    server_name example.com;
+    root /home/example.com;
+    access_log  /home/example.com/logs/nginx.access.log combined;
+    error_log  /home/example.com/logs/nginx.error.log;
+
+    include global/wordpress.conf;
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/run/php-fpm/example.com.sock;
+    }
+}

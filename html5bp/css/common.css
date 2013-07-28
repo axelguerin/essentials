@@ -1,0 +1,21 @@
+html, body {
+    height: 100%
+}
+#page {
+    margin: 0 auto;
+    width: 960px;
+    height: 100%;
+    position: relative;
+}
+#page-header, #page-content, #page-footer {
+    width: 960px;
+    margin: 0 auto;
+}
+#page-header-and-content {
+    min-height: 100%;
+    height: auto;
+    margin-bottom: -100px; /* Must be same as #page-footer and #footer-push heights */
+}
+#page-footer, #footer-push {
+    height: 100px; /* Don't forget to update the #page-header-and-content {margin-bottom} property */
+}

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Phing's build.xml for dumping and restoring DBs.
+
+@author Alexander Shepetko <a@shepetko.com>
+-->
+
+<project name="awesome" default="stub">
+    <property name="buildfile.name" value="${host.name}-build.properties" />
+
+    <target name="stub">
+        <echo>To create dump database type 'phing dump'</echo>
+        <echo>To load dump database type 'phing load'</echo>
+    </target>
+
+    <target name="prepare">
+        <property file="${host.name}-build.properties" />
+        <property name="dbhost" value="localhost" />
+        <property name="dbname" value="test" />
+        <property name="dbuser" value="root" />
+        <property name="dbpass" value="" />
+        <property name="dbdump" value="_resources/database.sql" />
+
+        <echo>
+            dbhost = ${dbhost}
+            dbname = ${dbname}
+            dbuser = ${dbuser}
+            dbpass = ${dbpass}
+            dbdump = ${dbdump}
+        </echo>
+
+        <mkdir dir="_resources" />
+    </target>
+
+    <!-- Создание дампа базы данных -->
+    <target name="dump" depends="prepare">
+        <exec command="mysqldump -h ${dbhost} -u ${dbuser} -p${dbpass} ${dbname} > ${dbdump}" checkreturn="true" logoutput="true" />
+    </target>
+
+    <!-- Загрузка дампа в базу данных -->
+    <target name="load" depends="prepare">
+        <if>
+            <not><available file="${dbdump}" /></not>
+            <then>
+                <fail msg="Database dump ${dbdump} not exists}" />
+            </then>
+        </if>
+        <echo>WARNING: your database will be completely overwritten!</echo>
+        <propertyprompt useExistingValue="true" propertyName="load.force" defaultValue="N" promptText="Your choice [y/N]:" />
+        <if>
+            <equals arg1="${load.force}" arg2="y" />
+            <then>
+                <echo msg="Loading dump from ${dbdump}" />
+                <exec command="cat ${dbdump} | mysql -h ${dbhost} -u ${dbuser} -p${dbpass} -D ${dbname}" checkreturn="true" logoutput="true" />
+            </then>
+        </if>
+    </target>
+</project>

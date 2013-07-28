@@ -1,0 +1,16 @@
+name = themename
+description = Theme name
+core = 7.x
+
+regions[help] = Справка
+regions[highlighted] = Выделенный
+regions[header] = Шапка
+regions[content] = Содержимое
+regions[sidebar_first] = Первый сайдбар
+regions[sidebar_second] = Второй сайдбар
+regions[footer] = Подвал
+
+stylesheets[all][] = css/normalize.css
+stylesheets[all][] = css/common.css
+
+scripts[] = js/common.js
